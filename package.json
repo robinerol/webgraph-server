@@ -1,0 +1,20 @@
+{
+  "name": "webgraph-server",
+  "version": "1.0.0",
+  "description": "A super minimal dev server to be used with the WebGraph repository.",
+  "scripts": {
+    "serve": "node src/index.js",
+    "prepare": "node src/generate.js",
+    "prettier:check": "prettier --check src",
+    "prettier:write": "prettier --write src"
+  },
+  "author": "Robin Erol Stuedle",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "chance": "^1.1.7",
+    "prettier": "^2.2.1"
+  }
+}
