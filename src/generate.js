@@ -1,6 +1,8 @@
 const fs = require("fs");
 const Chance = require("chance");
 
+const AMOUNT_OF_NODES = 100;
+
 const searchResult = [];
 const chance = new Chance();
 const clusters = {
@@ -11,7 +13,7 @@ const clusters = {
 };
 
 // generate nodes
-for (let i = 0; i < 100; i++) {
+for (let i = 0; i < AMOUNT_OF_NODES; i++) {
   const node = {};
 
   const id = chance.hash({ length: 15 });
@@ -33,6 +35,8 @@ for (let i = 0; i < 100; i++) {
   searchResult.push(node);
 }
 
+let amountOfEdges = 0;
+
 // generate refs that can be used for edges
 for (const nodePos in searchResult) {
   const node = searchResult[nodePos];
@@ -42,13 +46,19 @@ for (const nodePos in searchResult) {
 
   const cluster = clusters[clusterID];
 
-  node["refs"] = chance.pickset(
-    cluster,
-    chance.integer({ min: 1, max: cluster.length / 3 })
-  );
+  const amount = chance.integer({
+    min: 1,
+    max: Math.round(Math.max(cluster.length / (AMOUNT_OF_NODES * 0.015), 1)),
+  });
+
+  node["refs"] = chance.pickset(cluster, amount);
+
+  amountOfEdges += amount;
 }
 
-console.log("Search results generated.");
+console.log("Search result generated:");
+console.log(AMOUNT_OF_NODES + " nodes");
+console.log(amountOfEdges + " edges");
 
 // write JSON string to a file
 const path = "assets/search.json";
